@@ -1,0 +1,29 @@
+{
+  "name": "reviews",
+  "version": "1.0.0",
+  "description": "SDC service: reviews",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon ./server/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rfe4-Slate/Reviews.git"
+  },
+  "author": "SandraM",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rfe4-Slate/Reviews/issues"
+  },
+  "homepage": "https://github.com/rfe4-Slate/Reviews#readme",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "enzyme": "^3.11.0",
+    "express": "^4.17.1",
+    "jest": "^27.0.6",
+    "node": "^16.6.1",
+    "nodemon": "^2.0.12",
+    "pg": "^8.7.1",
+    "postgres": "^1.0.2"
+  }
+}
