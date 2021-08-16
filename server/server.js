@@ -5,18 +5,13 @@ const path = require('path');
 const app = express();
 
 const pool = require('../db/index.js');
-const { getReviews, postReview, getMetaData, getPhotos, markHelpful, markReported } = require('./queries.js');
+const { getReviews, postReview, getMetaData, markHelpful, markReported } = require('./queries.js');
 
 app.use(express.json());
 
 app.get('/', (req, res) => {
   res.status(200).send('Success!');
 });
-
-
-// user sends get request --> /reviews?product_id=1
-// /reviews?product_id=17068&count=10&sort=helpful&page=2
-// queryParams { product_id: '17068', count: '10', sort: 'helpful', page: '2' }
 
 app.get('/reviews', (req, res) => {
   let queryParams = req.query;
@@ -53,9 +48,7 @@ app.post('/reviews', (req,res) => {
 
 
 app.get('/reviews/meta', (req, res) => {
-
   let queryParams = req.query; // user will send product_id
-  console.log('meta data req', queryParams)
 
   if (!queryParams.product_id) {
     res.status(422).send('Error: invalid product_id provided');
@@ -71,89 +64,37 @@ app.get('/reviews/meta', (req, res) => {
     });
 
   }
-
 });
 
 
-app.put('/reviews/review_id/helpful', (req, res) => {
-  let reviewID = req.params; // ?
+app.put('/reviews/:review_id/helpful', (req, res) => {
+  let reviewID = req.params.review_id;
 
   markHelpful(reviewID, (err, results) => {
     if (err) {
       console.log('Error retrieving messages ' + err);
       res.sendStatus(404);
     } else {
-      res.status(200).send('Review marked helpful!');
+      res.status(204).send('Review marked helpful!');
     }
   });
 })
 
 
-app.put('/reviews/review_id/report', (req, res) => {
-  let reviewID = req.params; // ?
+app.put('/reviews/:review_id/report', (req, res) => {
+  let reviewID = req.params.review_id; // Id of review to be reported
 
-  markHelpful(reviewID, (err, results) => {
+  markReported(reviewID, (err, results) => {
     if (err) {
       console.log('Error retrieving messages ' + err);
       res.sendStatus(404);
     } else {
-      res.status(200).send('Review has been reported!');
+      res.status(204).send('Review has been reported!');
     }
   });
 })
 
-
-app.get('/reviews/test', (req, res) => {
-
-  getPhotos((err, results) => {
-    if (err) {
-      console.log('Error retrieving messages ' + err);
-      res.sendStatus(404);
-    } else {
-      res.status(200).json(results);
-    }
-  });
-
-})
 
 app.listen(port, () => {
   console.log(`listening on port ${port}`);
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // getPhotos((err, results) => {
-    //   if (err) {
-    //     console.log('Error retrieving messages ' + err);
-    //     res.sendStatus(404);
-    //   } else {
-    //     // console.log('I got some results back', results);
-    //     // results.rows --- an array of all matching rows based on query
-    //     // results.fields --- all fields of table queried
-    //     res.status(200).json(results);
-    //   }
-    // });

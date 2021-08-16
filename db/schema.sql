@@ -34,7 +34,7 @@ CREATE TABLE characteristic_reviews (
   id SERIAL PRIMARY KEY NOT NULL,
   characteristic_id int NOT NULL,
   review_id int NOT NULL,
-  value varChar(200),
+  value int,
   FOREIGN KEY (characteristic_id) REFERENCES characteristics(id),
   FOREIGN KEY (review_id) REFERENCES review(id)
 );
