@@ -1,0 +1,58 @@
+chaining cte postgresql
+  https://stackoverflow.com/questions/35248217/multiple-cte-in-single-query
+
+
+
+    WITH newReview AS (
+      INSERT INTO review
+      (product_id, rating, summary, body, recommend, reported, reviewer_name, reviewer_email, response, helpfulness)
+      VALUES
+      (890, 5, 'Great product', 'awesome product', true, false, 'Testing', 'test@testing.com', null, 0) RETURNING id)
+      SELECT id FROM newReview;
+
+
+      -- inserted review id at 5774956
+
+
+    WITH newReview AS (
+      INSERT INTO review
+      (product_id, rating, summary, body, recommend, reported, reviewer_name, reviewer_email, response, helpfulness)
+      VALUES
+      (890, 5, 'Great product', 'awesome product', true, false, 'Testing', 'test@testing.com', null, 0) RETURNING id),
+      addPhotos AS (
+      INSERT INTO reviewPhotos (review_id, url)
+      SELECT id, 'https://source.unsplash.com/random' FROM newReview RETURNING *)
+      SELECT newReview.id FROM newReview, addPhotos;
+
+
+
+
+      WITH newReview AS (
+      INSERT INTO review
+      (product_id, rating, summary, body, recommend, reported, reviewer_name, reviewer_email, response, helpfulness)
+      VALUES
+      (890, 5, 'Great product', 'awesome product', true, false, 'Testing', 'test@testing.com', null, 0) RETURNING id),
+      addPhotos AS (
+      INSERT INTO reviewPhotos (review_id, url)
+      SELECT id, 'https://source.unsplash.com/random' FROM newReview RETURNING *),
+      addChars AS (
+      INSERT INTO characteristic_reviews(characteristic_id, review_id, value)
+      SELECT 124800, id, '5' FROM newReview RETURNING *)
+      SELECT * FROM addChars;
+
+
+
+      // CHAINING CTE - ADDS ONE URL AND ONE CHAR
+
+       let queryString = `WITH newReview AS (
+      INSERT INTO review
+      (product_id, rating, summary, body, recommend, reported, reviewer_name, reviewer_email, response, helpfulness)
+      VALUES
+      ('${productID}', '${rating}', '${summary}', '${body}', '${recommend}', false, '${name}', '${email}', null, 0) RETURNING id),
+    addPhotos AS (
+      INSERT INTO reviewPhotos (review_id, url)
+      SELECT id, '${url}' FROM newReview RETURNING *),
+    addChars AS (
+      INSERT INTO characteristic_reviews(characteristic_id, review_id, value)
+      SELECT '${charID}', id, '${charRatingValue}' FROM newReview RETURNING *)
+      SELECT * FROM addChars`;

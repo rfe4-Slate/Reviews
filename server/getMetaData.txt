@@ -1,0 +1,67 @@
+
+https://app-hrsei-api.herokuapp.com/api/fec2/hr-rfe/reviews/meta?product_id=37311
+
+HOW USER RECEIVES DATA
+
+{
+    "product_id": "37311",
+    "ratings": {
+        "4": "1",
+        "5": "1"
+    },
+    "recommended": {
+        "false": "1",
+        "true": "1"
+    },
+    "characteristics": {
+        "Fit": {
+            "id": 125031,
+            "value": "4.0000000000000000"
+        },
+        "Length": {
+            "id": 125032,
+            "value": "3.5000000000000000"
+        },
+        "Comfort": {
+            "id": 125033,
+            "value": "5.0000000000000000"
+        },
+        "Quality": {
+            "id": 125034,
+            "value": "4.0000000000000000"
+        }
+    }
+}
+
+
+
+given product_id=4             6 ratings    average 3.33333
+  [
+    {
+        "rating": 4,
+        "recommend": true
+    },
+    {
+        "rating": 5,
+        "recommend": true
+    },
+    {
+        "rating": 2,
+        "recommend": false
+    },
+    {
+        "rating": 3,
+        "recommend": true
+    },
+    {
+        "rating": 3,
+        "recommend": true
+    },
+    {
+        "rating": 3,
+        "recommend": true
+    }
+]
+
+ queryString = `SELECT AVG(rating) FROM review WHERE product_id = ${productID}`;
+    gets average of all ratings
