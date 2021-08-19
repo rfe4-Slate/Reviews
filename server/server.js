@@ -94,7 +94,8 @@ app.put('/reviews/:review_id/report', (req, res) => {
   });
 })
 
+// module.exports = app;
 
 app.listen(port, () => {
-  console.log(`listening on port ${port}`);
+  console.log(`listening on porttt ${port}`);
 });

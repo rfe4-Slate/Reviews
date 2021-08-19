@@ -40,8 +40,6 @@ const getReviews = (parameters, callback) => {
       }
     });
   }).then((results) => {
-    console.log('USER GET promise resolved');
-
     finalResult['results'] = results.rows;
     callback(null, finalResult);
   }).catch((err) => {
@@ -88,7 +86,6 @@ const postReview = (addedReview, callback) => {
       }
     });
   }).then((results) => {
-    console.log('USER POST promise resolved');
     callback(null, results);
   }).catch((err) => {
     callback(err, null);
@@ -108,9 +105,8 @@ const getMetaData = (parameter, callback) => {
 
   let finalResult = {
     "product_id": `${productID}`,
-    "ratings": {          /// ratings is in review table -- get rating from all reviews table -- get average for each rating
-    },
-    "recommended": {        /// recommended is in review table
+    "ratings": {},      /// ratings is in review table -- get rating from all reviews table -- get average for each rating
+    "recommended": {    /// recommended is in review table
       "false": 0,
       "true": 0
     },
@@ -172,7 +168,6 @@ const markHelpful = (reviewID, callback) => {  // increment helpfulness int
       }
     });
   }).then((results) => {
-    console.log('USER GET promise resolved');
     callback(null, results);
   }).catch((err) => {
     callback(err, null);
@@ -192,7 +187,6 @@ const markReported = (reviewID, callback) => {  // update reported field to true
       }
     });
   }).then((results) => {
-    console.log('USER GET promise resolved');
     callback(null, results);
   }).catch((err) => {
     callback(err, null);

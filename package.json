@@ -4,7 +4,9 @@
   "description": "SDC service: reviews",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon ./server/server.js"
+    "start": "nodemon ./server/server.js",
+    "test": "jest",
+    "test:watch": "jest --watch"
   },
   "repository": {
     "type": "git",
@@ -25,5 +27,8 @@
     "nodemon": "^2.0.12",
     "pg": "^8.7.1",
     "postgres": "^1.0.2"
+  },
+  "devDependencies": {
+    "supertest": "^6.1.5"
   }
 }
