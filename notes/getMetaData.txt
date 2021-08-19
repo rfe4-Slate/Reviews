@@ -1,0 +1,223 @@
+
+https://app-hrsei-api.herokuapp.com/api/fec2/hr-rfe/reviews/meta?product_id=37311
+
+HOW USER RECEIVES DATA
+
+{
+    "product_id": "37311",
+    "ratings": {
+        "4": "1",
+        "5": "1"
+    },
+    "recommended": {
+        "false": "1",
+        "true": "1"
+    },
+    "characteristics": {
+        "Fit": {
+            "id": 125031,
+            "value": "4.0000000000000000"
+        },
+        "Length": {
+            "id": 125032,
+            "value": "3.5000000000000000"
+        },
+        "Comfort": {
+            "id": 125033,
+            "value": "5.0000000000000000"
+        },
+        "Quality": {
+            "id": 125034,
+            "value": "4.0000000000000000"
+        }
+    }
+}
+
+
+
+given product_id=4             6 ratings    average 3.33333
+  [
+    {
+        "rating": 4,
+        "recommend": true
+    },
+    {
+        "rating": 5,
+        "recommend": true
+    },
+    {
+        "rating": 2,
+        "recommend": false
+    },
+    {
+        "rating": 3,
+        "recommend": true
+    },
+    {
+        "rating": 3,
+        "recommend": true
+    },
+    {
+        "rating": 3,
+        "recommend": true
+    }
+]
+
+ queryString = `SELECT AVG(rating) FROM review WHERE product_id = ${productID}`;
+    gets average of all ratings
+
+
+
+MAY BE ABLE TO USE WITH AS TO STRING MULTIPLE QUERIES
+  let queryTwo = `WITH first AS (
+    SELECT id, name FROM characteristics WHERE product_id = ${productID} RETURNING id, name),
+    second AS (
+      SELECT value FROM characteristic_reviews WHERE characteristic_id = id FROM first RETURNING value
+    )`;
+
+
+
+
+
+
+    "characteristics": {    /// select all char id & names given product_id in chars table ----  search char_reviews table given each id
+                                                                                              // get average of all value rating to get final value count
+      // "Fit": {
+      //   "id": "char_id",
+      //   "value": "avg of all values"
+      // },
+      // "Length": {
+      //   "id": "char_id",
+      //   "value": "avg of all values"
+      // },
+      // "Comfort": {
+      //   "id": "char_id",
+      //   "value": "avg of all values" // ---varchar datatype
+      // }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  let queryTwo = `SELECT * FROM characteristics
+  FULL JOIN characteristic_reviews on characteristic_id = characteristics.id
+  WHERE product_id = ${productID}`;
+
+
+
+
+  pool.query(queryTwo, (err, results) => {
+      if (err) {
+        console.log('err', err);
+      } else {
+        let charNames = [];
+
+        results.rows.map((item) => {
+          if (charNames.indexOf(item) === -1) {
+            charNames.push(item.name);
+          }
+
+          if (!finalResult['characteristics'][item.name]) {
+            finalResult['characteristics'][item.name] = {'id': item.id, 'value': [item.value]};
+          } else {
+            finalResult['characteristics'][item.name]['value'].push(item.value);
+          }
+        })
+
+        let uniqueCharNames = [];
+
+        charNames.forEach((name) => {
+          if (uniqueCharNames.indexOf(name) === -1) {
+            uniqueCharNames.push(name);
+          }
+        })
+
+        uniqueCharNames.map((item) => {
+          let array = finalResult['characteristics'][item]['value'];
+
+          let total = 0;
+          let count = 0;
+
+          array.map((num) => {
+            total += num;
+            count++;
+          })
+
+          finalResult['characteristics'][item]['value'] = (total/count).toString();
+        })
+
+        callback(null, finalResult);
+      }
+    })
+
+
+
+
+
+
+
+
+
+
+
+
+
+// DOES NOTT WORK
+  let queryTwo = `SELECT characteristics.id, name FROM characteristics SELECT value from characteristic_reviews
+  LEFT JOIN characteristic_reviews on characteristic_id = characteristics.id
+  WHERE product_id = ${productID}`;
+
+
+
+
+
+
+
+
+
+  ///////
+  ///////
+  // POST REVIEW - using template literals
+  ///////
+  ///////
+    let productID = addedReview.product_id;
+  let rating = addedReview.rating;
+  let summary = addedReview.summary;
+  let body = addedReview.body;
+  let recommend = addedReview.recommend;
+  let name = addedReview.name;
+  let email = addedReview.email;
+  let url = addedReview.photos[0]; // this is an array of url strings
+  let allChars = Object.keys(addedReview.characteristics);
+  let charID =allChars[0]; // this is the first key of the obj - which represents char_id
+  let charRatingValue = addedReview.characteristics[charID];
+
+
+  let queryString = `WITH newReview AS (
+      INSERT INTO review
+      (product_id, rating, summary, body, recommend, reported, reviewer_name, reviewer_email, response, helpfulness)
+      VALUES
+      ('${productID}', '${rating}', '${summary}', '${body}', '${recommend}', false, '${name}', '${email}', null, 0) RETURNING id),
+    addPhotos AS (
+      INSERT INTO reviewPhotos (review_id, url)
+      SELECT id, '${url}' FROM newReview RETURNING *),
+    addChars AS (
+      INSERT INTO characteristic_reviews(characteristic_id, review_id, value)
+      SELECT '${charID}', id, '${charRatingValue}' FROM newReview RETURNING *)
+      SELECT * FROM addChars`;

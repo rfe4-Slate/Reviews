@@ -1,0 +1,207 @@
+artillery quick command in terminal
+The `quick` command only works to test HTTP services. You cannot run quick tests for other services, such as Socket.IO or WebSockets.
+
+artillery quick --count 20 -n 40 http://localhost:4001/reviews
+
+Started phase 0, duration: 1s @ 08:11:06(-0400) 2021-08-18
+Report @ 08:11:08(-0400) 2021-08-18
+Elapsed time: 2 seconds
+  Scenarios launched:  20
+  Scenarios completed: 20
+  Requests completed:  800
+  Mean response/sec: 404.04
+  Response time (msec):
+    min: 1
+    max: 47
+    median: 9
+    p95: 26
+    p99: 36
+  Codes:
+    422: 800
+
+All virtual users finished
+Summary report @ 08:11:08(-0400) 2021-08-18
+  Scenarios launched:  20
+  Scenarios completed: 20
+  Requests completed:  800
+  Mean response/sec: 400
+  Response time (msec):
+    min: 1
+    max: 47
+    median: 9
+    p95: 26
+    p99: 36
+  Scenario counts:
+    0: 20 (100%)
+  Codes:
+    422: 800
+
+
+
+
+    artillery quick --count 20 -n 40 http://localhost:4001/reviews?product_id=21233
+
+    Started phase 0, duration: 1s @ 08:33:51(-0400) 2021-08-18
+Report @ 08:34:01(-0400) 2021-08-18
+Elapsed time: 10 seconds
+  Scenarios launched:  20
+  Scenarios completed: 0
+  Requests completed:  546
+  Mean response/sec: 56.77
+  Response time (msec):
+    min: 69
+    max: 678
+    median: 325
+    p95: 486.2
+    p99: 577.2
+  Codes:
+    200: 546
+
+Report @ 08:34:05(-0400) 2021-08-18
+Elapsed time: 14 seconds
+  Scenarios launched:  0
+  Scenarios completed: 20
+  Requests completed:  254
+  Mean response/sec: 61.58
+  Response time (msec):
+    min: 52
+    max: 496
+    median: 272.5
+    p95: 401
+    p99: 456.9
+  Codes:
+    200: 254
+
+All virtual users finished
+Summary report @ 08:34:05(-0400) 2021-08-18
+  Scenarios launched:  20
+  Scenarios completed: 20
+  Requests completed:  800
+  Mean response/sec: 57.85
+  Response time (msec):
+    min: 52
+    max: 678
+    median: 311
+    p95: 467
+    p99: 558.5
+  Scenario counts:
+    0: 20 (100%)
+  Codes:
+    200: 800
+
+
+
+
+ RAN GET_REVIEWS FILE 8/18/21
+
+    Report @ 08:55:58(-0400) 2021-08-18
+Elapsed time: 4 minutes, 51 seconds
+  Scenarios launched:  36
+  Scenarios completed: 46
+  Requests completed:  46
+  Mean response/sec: 31.09
+  Response time (msec):
+    min: 44
+    max: 223
+    median: 139.5
+    p95: 189.6
+    p99: 223
+  Codes:
+    200: 46
+
+All virtual users finished
+Summary report @ 08:55:58(-0400) 2021-08-18
+  Scenarios launched:  11865
+  Scenarios completed: 11865
+  Requests completed:  11865
+  Mean response/sec: 40.76
+  Response time (msec):
+    min: 20
+    max: 526
+    median: 132
+    p95: 225
+    p99: 315.7
+  Scenario counts:
+    Search and Get: 11865 (100%)
+  Codes:
+    200: 11865
+
+
+  GET REVIEWS 7pm
+
+    All virtual users finished
+Summary report @ 19:48:04(-0400) 2021-08-18
+  Scenarios launched:  11790
+  Scenarios completed: 11790
+  Requests completed:  11790
+  Mean response/sec: 40.5
+  Response time (msec):
+    min: 31
+    max: 7418
+    median: 204
+    p95: 6860
+    p99: 7099.6
+  Scenario counts:
+    Search and Get: 11790 (100%)
+  Codes:
+    200: 11790
+
+
+
+
+
+
+  RAN GET_METADATA FILE 8/18/21
+
+    Report @ 12:00:20(-0400) 2021-08-18
+Elapsed time: 4 minutes, 51 seconds
+  Scenarios launched:  37
+  Scenarios completed: 38
+  Requests completed:  38
+  Mean response/sec: 30.33
+  Response time (msec):
+    min: 3
+    max: 13
+    median: 6
+    p95: 10.2
+    p99: 13
+  Codes:
+    200: 38
+
+All virtual users finished
+Summary report @ 12:00:20(-0400) 2021-08-18
+  Scenarios launched:  11834
+  Scenarios completed: 11834
+  Requests completed:  11834
+  Mean response/sec: 40.65
+  Response time (msec):
+    min: 1
+    max: 53
+    median: 5
+    p95: 9
+    p99: 16
+  Scenario counts:
+    Search and Get: 11834 (100%)
+  Codes:
+    200: 11834
+
+
+
+  GET META DATA 7PM
+
+    All virtual users finished
+Summary report @ 19:19:32(-0400) 2021-08-18
+  Scenarios launched:  11813
+  Scenarios completed: 11813
+  Requests completed:  11813
+  Mean response/sec: 40.58
+  Response time (msec):
+    min: 1
+    max: 289
+    median: 4
+    p95: 6
+    p99: 9.4
+  Scenario counts:
+    Search and Get: 11813 (100%)
+  Codes:
+    200: 11813

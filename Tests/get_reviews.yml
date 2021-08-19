@@ -1,0 +1,19 @@
+config:
+  target: "http://localhost:4001"
+  phases:
+  - duration: 30
+    arrivalRate: 5
+    name: Warm up
+  - duration: 60
+    arrivalRate: 5
+    rampTo: 50
+    name: Ramp up load
+  - duration: 200
+    arrivalRate: 50
+    name: Sustained load
+
+scenarios:
+  - name: "Search and Get"
+    flow:
+    - get:
+        url: "/reviews?product_id=37312"

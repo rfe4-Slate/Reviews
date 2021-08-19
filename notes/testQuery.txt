@@ -1,0 +1,102 @@
+
+
+app.get('/reviews/test', (req, res) => {
+
+  getPhotos((err, results) => {
+    if (err) {
+      console.log('Error retrieving messages ' + err);
+      res.sendStatus(404);
+    } else {
+      res.status(200).json(results);
+    }
+  });
+
+})
+
+
+
+
+
+
+const getPhotos = (callback) => {
+  // let queryString = 'SELECT * FROM review WHERE product_id = 4';
+  // let queryString = 'SELECT * FROM characteristics WHERE product_id = 2';
+  // let queryString = 'SELECT * FROM review WHERE id = 5774952';
+
+  // let queryString = 'SELECT * FROM review WHERE id = 5774956';
+  // my test one with ian but not inserting into photos/chars table
+
+  // let queryString = 'SELECT * FROM reviewPhotos WHERE review_id = 5774963';
+
+  // let queryString = 'SELECT * FROM review WHERE id = 5774963';
+
+  // let queryString = 'SELECT * FROM review WHERE product_id = 37312';
+
+  // let photos = ["https://source.unsplash.com/random", "https://source.unsplash.com/random"];
+  // let queryString = `INSERT INTO reviewPhotos (review_id, url) VALUES (5774963, 'https://source.unsplash.com/random')`; --- this works!
+  // let queryString = `INSERT INTO reviewPhotos (review_id, url) VALUES (5774963, photo::text[] FROM unnest(${photos}::text[]) AS t (photo))`; --- this does not work
+  // let queryString = `INSERT INTO reviewPhotos (review_id, url)
+  // VALUES (5774963, unnest(ARRAY[${photos}]::text[])
+  // )`;
+
+  let queryString = 'SELECT * FROM characteristic_reviews WHERE review_id = 214824';
+
+//   {
+//     "id": 717510,
+//     "characteristic_id": 124804,
+//     "review_id": 214824,
+//     "value": 1
+// },
+// {
+//     "id": 717511,
+//     "characteristic_id": 124805,
+//     "review_id": 214824,
+//     "value": 4
+// },
+// {
+//     "id": 717512,
+//     "characteristic_id": 124806,
+//     "review_id": 214824,
+//     "value": 1
+// },
+// {
+//     "id": 717513,
+//     "characteristic_id": 124807,
+//     "review_id": 214824,
+//     "value": 5
+// }
+
+
+  // 5774969
+
+
+  return new Promise((resolve, reject) => {
+    pool.query(queryString, (err, results) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(results);
+      }
+    });
+  }).then((results) => {
+    console.log('USER GET promise resolved');
+    console.log('results from test request', results)
+    callback(null, results);
+  }).catch((err) => {
+    callback(err, null);
+  });
+}
+
+
+
+
+
+
+
+
+
+SELECT review.id AS review_id, rating, summary, recommend, response, body, date, reviewer_name, helpfulness,
+    ARRAY_AGG (json_build_object('id', reviewPhotos.id, 'url' , url)) as photos FROM review
+    LEFT JOIN reviewPhotos ON review_id = review.id WHERE product_id = 37312 AND reported != true
+    GROUP BY review.id
+    ORDER BY date DESC LIMIT 7;
